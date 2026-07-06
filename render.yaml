@@ -1,0 +1,18 @@
+# ================================================================
+# render.yaml - Render 部署蓝图
+#
+# 将此项目推送到 GitHub/GitLab 后，在 Render 控制台选择
+# "Blueprint" 方式部署，Render 会自动读取此文件。
+# ================================================================
+
+services:
+  - type: web
+    name: student-grade-system
+    env: python
+    region: singapore                          # 新加坡节点，国内访问较快
+    plan: free                                 # 免费计划
+    buildCommand: bash compile.sh && pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
